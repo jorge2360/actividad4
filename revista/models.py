@@ -34,7 +34,7 @@ class Publicacion(models.Model):
 
 class Comentario(models.Model):
     publicacion = models.ForeignKey(Publicacion, on_delete=models.CASCADE, related_name="comentarios")
-    nombre_estudiante = models.CharField(max_length=100)  # quien comenta
+    nombre_estudiante = models.CharField(max_length=100)
     contenido = models.TextField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 

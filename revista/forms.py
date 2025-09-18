@@ -1,14 +1,11 @@
 from django import forms
-from .models import Publicacion, Comentario
+from .models import Comentario
 
-# Formulario para crear/editar publicaciones (administrador)
-class PublicacionForm(forms.ModelForm):
-    class Meta:
-        model = Publicacion
-        fields = ['titulo', 'contenido']
-
-# Formulario para comentar publicaciones (estudiantes)
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
         fields = ['nombre_estudiante', 'contenido']
+        widgets = {
+            'nombre_estudiante': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu nombre'}),
+            'contenido': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Escribe tu comentario...'}),
+        }

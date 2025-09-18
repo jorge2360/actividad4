@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 
-    <!-- Tabla de Publicaciones -->
+<!-- Tabla de Publicaciones -->
 <section id="hero" class="hero section dark-background">
   <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
   <div class="container" data-aos="fade-up">
@@ -31,6 +31,37 @@
           <td>{{ pub.fecha_publicacion }}</td>
           <td>{{ pub.publicador.nombre }}</td>
           <td>{{ pub.autorizador.nombre }}</td>
+        </tr>
+        <tr>
+          <td colspan="5">
+
+            <!-- Listado de comentarios -->
+            <h6>Comentarios:</h6>
+            <ul class="list-group mb-2">
+              {% for comentario in pub.comentarios.all %}
+                <li class="list-group-item">
+                  <strong>{{ comentario.nombre_estudiante }}</strong>: {{ comentario.contenido }}
+                  <br><small class="text-muted">{{ comentario.fecha_creacion }}</small>
+                </li>
+              {% empty %}
+                <li class="list-group-item text-muted">No hay comentarios aún.</li>
+              {% endfor %}
+            </ul>
+
+            <!-- Formulario de comentario -->
+            <form method="post" class="mb-3">
+              {% csrf_token %}
+              <div class="mb-2">
+                {{ form_com.nombre_estudiante }}
+              </div>
+              <div class="mb-2">
+                {{ form_com.contenido }}
+              </div>
+              <input type="hidden" name="publicacion_id" value="{{ pub.id }}">
+              <button type="submit" name="crear_comentario" class="btn btn-primary btn-sm">Comentar</button>
+            </form>
+
+          </td>
         </tr>
         {% empty %}
         <tr>
@@ -89,6 +120,15 @@
         {% endfor %}
       </tbody>
     </table>
+
+    <!-- Crear nueva publicación -->
+    <h3 class="mt-4">Crear nueva publicación</h3>
+    <form method="post">
+      {% csrf_token %}
+      {{ form_pub.as_p }}
+      <button type="submit" name="crear_publicacion" class="btn btn-success">Guardar</button>
+    </form>
+
+  </div>
 </section>
-</div>
 {% endblock %}
