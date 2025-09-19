@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Agregar Estudiante{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+  <div class="container" data-aos="fade-up">
+
+    <h1 class="text-white">Agregar Estudiante Publicador</h1>
+
+    <div class="bg-light p-4 rounded shadow mt-4">
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          {{ form.nombre.label_tag }}
+          {{ form.nombre }}
+        </div>
+        <div class="mb-3">
+          {{ form.correo.label_tag }}
+          {{ form.correo }}
+        </div>
+        <div class="mb-3">
+          {{ form.carrera.label_tag }}
+          {{ form.carrera }}
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{% url 'revista:estudiantes' %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -2,131 +2,77 @@
 {% load static %}
 
 {% block title %}Publicaciones{% endblock %}
-{% block logo %}
-  Publicaciones
-{% endblock %}
+{% block logo %}Publicaciones{% endblock %}
 {% block content %}
-
-<!-- Tabla de Publicaciones -->
 <section id="hero" class="hero section dark-background">
   <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
   <div class="container" data-aos="fade-up">
     <h1 class="text-white">Publicaciones</h1>
+
+    <!-- Botón y formulario para nueva publicación -->
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#formPublicacion">
+      Agregar Publicación
+    </button>
+
+    <div class="collapse mt-3" id="formPublicacion">
+      <form method="post" class="bg-light p-4 rounded shadow">
+        {% csrf_token %}
+        {{ form_pub.as_p }}
+        <button type="submit" name="crear_publicacion" class="btn btn-primary">Guardar</button>
+      </form>
+    </div>
+
+    <!-- Tabla de publicaciones -->
     <div class="table-responsive bg-light p-4 rounded shadow mt-4">
       <table class="table table-striped table-bordered mb-0">
         <thead class="table-dark">
-        <tr>
-          <th>Título</th>
-          <th>Contenido</th>
-          <th>Fecha</th>
-          <th>Publicador</th>
-          <th>Autorizador</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for pub in publicaciones %}
-        <tr>
-          <td>{{ pub.titulo }}</td>
-          <td>{{ pub.contenido }}</td>
-          <td>{{ pub.fecha_publicacion }}</td>
-          <td>{{ pub.publicador.nombre }}</td>
-          <td>{{ pub.autorizador.nombre }}</td>
-        </tr>
-        <tr>
-          <td colspan="5">
+          <tr>
+            <th>Título</th>
+            <th>Contenido</th>
+            <th>Fecha</th>
+            <th>Publicador</th>
+            <th>Autorizador</th>
+            <th>Comentarios</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pub in publicaciones %}
+          <tr>
+            <td>{{ pub.titulo }}</td>
+            <td>{{ pub.contenido }}</td>
+            <td>{{ pub.fecha_publicacion }}</td>
+            <td>{{ pub.publicador.nombre }}</td>
+            <td>{{ pub.autorizador.nombre }}</td>
+            <td>
+              <ul>
+                {% for c in pub.comentarios.all %}
+                  <li>{{ c.nombre_estudiante }}: {{ c.contenido }}</li>
+                {% empty %}
+                  <li>No hay comentarios</li>
+                {% endfor %}
+              </ul>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center">No hay publicaciones aún.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-            <!-- Listado de comentarios -->
-            <h6>Comentarios:</h6>
-            <ul class="list-group mb-2">
-              {% for comentario in pub.comentarios.all %}
-                <li class="list-group-item">
-                  <strong>{{ comentario.nombre_estudiante }}</strong>: {{ comentario.contenido }}
-                  <br><small class="text-muted">{{ comentario.fecha_creacion }}</small>
-                </li>
-              {% empty %}
-                <li class="list-group-item text-muted">No hay comentarios aún.</li>
-              {% endfor %}
-            </ul>
-
-            <!-- Formulario de comentario -->
-            <form method="post" class="mb-3">
-              {% csrf_token %}
-              <div class="mb-2">
-                {{ form_com.nombre_estudiante }}
-              </div>
-              <div class="mb-2">
-                {{ form_com.contenido }}
-              </div>
-              <input type="hidden" name="publicacion_id" value="{{ pub.id }}">
-              <button type="submit" name="crear_comentario" class="btn btn-primary btn-sm">Comentar</button>
-            </form>
-
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="5" class="text-center">No hay publicaciones aún.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <!-- Tabla de Publicadores -->
-    <h2 class="mt-4">Estudiantes Publicadores</h2>
-    <table class="table table-bordered table-striped">
-      <thead class="table-dark">
-        <tr>
-          <th>Nombre</th>
-          <th>Correo</th>
-          <th>Carrera</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for p in publicadores %}
-        <tr>
-          <td>{{ p.nombre }}</td>
-          <td>{{ p.correo }}</td>
-          <td>{{ p.carrera }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="3" class="text-center">No hay publicadores registrados.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <!-- Tabla de Autorizadores -->
-    <h2 class="mt-4">Estudiantes Autorizadores</h2>
-    <table class="table table-bordered table-striped">
-      <thead class="table-dark">
-        <tr>
-          <th>Nombre</th>
-          <th>Correo</th>
-          <th>Departamento</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for a in autorizadores %}
-        <tr>
-          <td>{{ a.nombre }}</td>
-          <td>{{ a.correo }}</td>
-          <td>{{ a.departamento }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="3" class="text-center">No hay autorizadores registrados.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <!-- Crear nueva publicación -->
-    <h3 class="mt-4">Crear nueva publicación</h3>
-    <form method="post">
+    <!-- Formulario para agregar comentario -->
+    <h2 class="mt-4">Agregar Comentario</h2>
+    <form method="post" class="bg-light p-4 rounded shadow">
       {% csrf_token %}
-      {{ form_pub.as_p }}
-      <button type="submit" name="crear_publicacion" class="btn btn-success">Guardar</button>
+      {{ form_com.as_p }}
+      <select name="publicacion_id" class="form-select mb-3">
+        {% for pub in publicaciones %}
+          <option value="{{ pub.id }}">{{ pub.titulo }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" name="crear_comentario" class="btn btn-primary">Agregar Comentario</button>
     </form>
 
   </div>

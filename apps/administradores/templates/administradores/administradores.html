@@ -2,51 +2,70 @@
 {% load static %}
 
 {% block title %}Administradores{% endblock %}
-{% block logo %}Administradores{% endblock %}
+
+{% block logo %}
+  Panel Administradores
+{% endblock %}
 
 {% block content %}
 <section id="hero" class="hero section dark-background">
-  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
-  <div class="container">
-
-    <h1 class="text-white">Administradores (Autorizadores)</h1>
-
-    <!-- Tabla de administradores -->
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+  <div class="container" data-aos="fade-up">
+    <h1 class="text-white">Panel de Administradores</h1>
     <div class="table-responsive bg-light p-4 rounded shadow mt-4">
       <table class="table table-striped table-bordered mb-0">
         <thead class="table-dark">
           <tr>
+            <th>No.</th>
             <th>Nombre</th>
+            <th>Usuario</th>
             <th>Correo</th>
-            <th>Departamento</th>
           </tr>
         </thead>
         <tbody>
-          {% for a in autorizadores %}
-          <tr>
-            <td>{{ a.nombre }}</td>
-            <td>{{ a.correo }}</td>
-            <td>{{ a.departamento }}</td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="3" class="text-center">No hay administradores registrados.</td>
-          </tr>
-          {% endfor %}
+          <tr><td>1</td><td>Luis Chávez</td><td>lchavez</td><td>luis@example.com</td></tr>
+          <tr><td>2</td><td>Laura Castillo</td><td>lcastillo</td><td>laura@example.com</td></tr>
+          <tr><td>3</td><td>Daniel Moreno</td><td>dmoreno</td><td>daniel@example.com</td></tr>
+          <tr><td>4</td><td>María Torres</td><td>mtorres</td><td>maria@example.com</td></tr>
+          <tr><td>5</td><td>Juan Pérez</td><td>jperez</td><td>juan@example.com</td></tr>
+          <tr><td>6</td><td>Carla Gómez</td><td>cgomez</td><td>carla@example.com</td></tr>
+          <tr><td>7</td><td>Pedro Sánchez</td><td>psanchez</td><td>pedro@example.com</td></tr>
+          <tr><td>8</td><td>Lucía Ríos</td><td>lrios</td><td>lucia@example.com</td></tr>
+          <tr><td>9</td><td>Ricardo Salas</td><td>rsalas</td><td>ricardo@example.com</td></tr>
+          <tr><td>10</td><td>Ana Cruz</td><td>acruz</td><td>ana@example.com</td></tr>
         </tbody>
       </table>
     </div>
+      <h2>Administradores (Autorizadores)</h2>
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Departamento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in autorizadores %}
+      <tr>
+        <td>{{ a.nombre }}</td>
+        <td>{{ a.correo }}</td>
+        <td>{{ a.departamento }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center">No hay administradores registrados.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <!-- Formulario -->
-    <h2 class="mt-4 text-white">Agregar nuevo administrador</h2>
-    <div class="bg-light p-4 rounded shadow">
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" name="crear_autorizador" class="btn btn-success">Guardar</button>
-      </form>
-    </div>
-
+  <h3>Agregar nuevo administrador</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="crear_autorizador" class="btn btn-success">Guardar</button>
+  </form>
   </div>
 </section>
 {% endblock %}
