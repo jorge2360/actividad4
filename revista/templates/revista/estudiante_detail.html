@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalle Estudiante{% endblock %}
+{% block logo %}Detalle Estudiante{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+  <div class="container mt-5 bg-light p-4 rounded shadow" data-aos="fade-up">
+    <h2>Detalle del Estudiante</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Nombre:</strong> {{ estudiante.nombre }}</li>
+      <li class="list-group-item"><strong>Correo:</strong> {{ estudiante.correo }}</li>
+      <li class="list-group-item"><strong>Carrera:</strong> {{ estudiante.carrera }}</li>
+    </ul>
+    <a href="{% url 'revista:estudiantes' %}" class="btn btn-secondary mt-3">Volver</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,7 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import DetailView, UpdateView
+from django.urls import reverse_lazy
+
 from .models import Publicacion, EstudiantePublicador, EstudianteAutorizador
-from .forms import ComentarioForm
-from .forms import EstudiantePublicadorForm, EstudianteAutorizadorForm, PublicacionForm
+from .forms import ComentarioForm, EstudiantePublicadorForm, EstudianteAutorizadorForm, PublicacionForm
+
+
+# ==========================
+# FUNCIONES ORIGINALES (listado + crear)
+# ==========================
 
 def publicaciones(request):
     publicaciones = Publicacion.objects.all()
@@ -12,7 +19,6 @@ def publicaciones(request):
     if request.method == 'POST' and 'crear_publicacion' in request.POST:
         form_pub = PublicacionForm(request.POST)
         if form_pub.is_valid():
-            # Guardar sin modificar fecha_publicacion (auto_now_add)
             nueva_pub = form_pub.save(commit=False)
             nueva_pub.save()
             return redirect('revista:publicaciones')
@@ -39,6 +45,7 @@ def publicaciones(request):
         "form_com": form_com
     })
 
+
 def agregar_publicacion(request):
     if request.method == 'POST':
         form = PublicacionForm(request.POST)
@@ -48,6 +55,7 @@ def agregar_publicacion(request):
     else:
         form = PublicacionForm()
     return render(request, 'revista/agregar_publicacion.html', {'form': form})
+
 
 def estudiantes(request):
     estudiantes = EstudiantePublicador.objects.all()
@@ -82,6 +90,7 @@ def administradores(request):
         "form_aut": form_aut
     })
 
+
 def agregar_publicador(request):
     if request.method == 'POST':
         form = EstudiantePublicadorForm(request.POST)
@@ -103,14 +112,49 @@ def agregar_autorizador(request):
         form = EstudianteAutorizadorForm()
     return render(request, 'revista/agregar_autorizador.html', {'form': form})
 
-def listar_estudiantes(request):
-    estudiantes = EstudiantePublicador.objects.all()
-    return render(request, "revista/estudiantes.html", {"estudiantes": estudiantes})
 
-def listar_administradores(request):
-    administradores = EstudianteAutorizador.objects.all()
-    return render(request, "revista/administradores.html", {"administradores": administradores})
+# ==========================
+# DETAIL & UPDATE VIEWS (CBV)
+# TODAS USAN TEMPLATES EN: revista/templates/revista/
+# ==========================
 
-def listar_publicaciones(request):
-    publicaciones = Publicacion.objects.all()
-    return render(request, "revista/publicaciones.html", {"publicaciones": publicaciones})
+# --- Estudiantes ---
+class EstudianteDetailView(DetailView):
+    model = EstudiantePublicador
+    template_name = "revista/estudiante_detail.html"
+    context_object_name = "estudiante"
+
+
+class EstudianteUpdateView(UpdateView):
+    model = EstudiantePublicador
+    form_class = EstudiantePublicadorForm
+    template_name = "revista/estudiante_form.html"
+    success_url = reverse_lazy("revista:estudiantes")
+
+
+# --- Administradores ---
+class AdministradorDetailView(DetailView):
+    model = EstudianteAutorizador
+    template_name = "revista/administrador_detail.html"
+    context_object_name = "administrador"
+
+
+class AdministradorUpdateView(UpdateView):
+    model = EstudianteAutorizador
+    form_class = EstudianteAutorizadorForm
+    template_name = "revista/administrador_form.html"
+    success_url = reverse_lazy("revista:administradores")
+
+
+# --- Publicaciones ---
+class PublicacionDetailView(DetailView):
+    model = Publicacion
+    template_name = "revista/publicacion_detail.html"
+    context_object_name = "publicacion"
+
+
+class PublicacionUpdateView(UpdateView):
+    model = Publicacion
+    form_class = PublicacionForm
+    template_name = "revista/publicacion_form.html"
+    success_url = reverse_lazy("revista:publicaciones")

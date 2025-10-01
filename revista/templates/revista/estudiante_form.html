@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Estudiante{% endblock %}
+{% block logo %}Editar Estudiante{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
+  <div class="container mt-5 bg-light p-4 rounded shadow text-dark" data-aos="fade-up">
+    <h2>Editar Estudiante</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      <a href="{% url 'revista:estudiantes' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

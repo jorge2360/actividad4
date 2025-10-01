@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalle Publicación{% endblock %}
+{% block logo %}Detalle Publicación{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
+  <div class="container mt-5 bg-light p-4 rounded shadow" data-aos="fade-up">
+    <h2>Detalle de la Publicación</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Título:</strong> {{ publicacion.titulo }}</li>
+      <li class="list-group-item"><strong>Contenido:</strong> {{ publicacion.contenido }}</li>
+      <li class="list-group-item"><strong>Fecha:</strong> {{ publicacion.fecha_publicacion }}</li>
+      <li class="list-group-item"><strong>Publicador:</strong> {{ publicacion.publicador.nombre }}</li>
+      <li class="list-group-item"><strong>Autorizador:</strong> {{ publicacion.autorizador.nombre }}</li>
+    </ul>
+
+    <h4 class="mt-4">Comentarios</h4>
+    <ul class="list-group">
+      {% for c in publicacion.comentarios.all %}
+        <li class="list-group-item">{{ c.nombre_estudiante }}: {{ c.contenido }}</li>
+      {% empty %}
+        <li class="list-group-item">No hay comentarios</li>
+      {% endfor %}
+    </ul>
+
+    <a href="{% url 'revista:publicaciones' %}" class="btn btn-secondary mt-3">Volver</a>
+  </div>
+</section>
+{% endblock %}

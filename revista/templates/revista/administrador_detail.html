@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalle Administrador{% endblock %}
+{% block logo %}Detalle Administrador{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
+  <div class="container mt-5 bg-light p-4 rounded shadow" data-aos="fade-up">
+    <h2>Detalle del Administrador</h2>
+    <ul class="list-group">
+      <li class="list-group-item"><strong>Nombre:</strong> {{ administrador.nombre }}</li>
+      <li class="list-group-item"><strong>Correo:</strong> {{ administrador.correo }}</li>
+      <li class="list-group-item"><strong>Departamento:</strong> {{ administrador.departamento }}</li>
+    </ul>
+    <a href="{% url 'revista:administradores' %}" class="btn btn-secondary mt-3">Volver</a>
+  </div>
+</section>
+{% endblock %}
