@@ -9,7 +9,6 @@ class EstudiantePublicador(models.Model):
     def __str__(self):
         return self.nombre
 
-
 # Estudiantes que autorizan publicaciones
 class EstudianteAutorizador(models.Model):
     nombre = models.CharField(max_length=100)
@@ -18,7 +17,6 @@ class EstudianteAutorizador(models.Model):
 
     def __str__(self):
         return self.nombre
-
 
 # Publicaciones
 class Publicacion(models.Model):

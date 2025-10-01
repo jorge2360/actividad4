@@ -5,11 +5,6 @@ from django.urls import reverse_lazy
 from .models import Publicacion, EstudiantePublicador, EstudianteAutorizador
 from .forms import ComentarioForm, EstudiantePublicadorForm, EstudianteAutorizadorForm, PublicacionForm
 
-
-# ==========================
-# FUNCIONES ORIGINALES (listado + crear)
-# ==========================
-
 def publicaciones(request):
     publicaciones = Publicacion.objects.all()
     publicadores = EstudiantePublicador.objects.all()
@@ -112,11 +107,7 @@ def agregar_autorizador(request):
         form = EstudianteAutorizadorForm()
     return render(request, 'revista/agregar_autorizador.html', {'form': form})
 
-
-# ==========================
-# DETAIL & UPDATE VIEWS (CBV)
-# TODAS USAN TEMPLATES EN: revista/templates/revista/
-# ==========================
+# DETAIL y UPDATE VIEWS
 
 # --- Estudiantes ---
 class EstudianteDetailView(DetailView):

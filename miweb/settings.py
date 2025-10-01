@@ -82,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'revista_universitaria',
-        'USER': 'root',           # tu usuario
-        'PASSWORD': 'Ubuntu1.2', # tu clave
+        'USER': 'root',          
+        'PASSWORD': 'Ubuntu1.2', 
         'HOST': 'localhost',
         'PORT': '3306',
     }
