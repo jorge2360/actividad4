@@ -23,5 +23,5 @@ urlpatterns = [
     path('estudiantes/', include('apps.estudiantes.urls')),
     path('administradores/', include('apps.administradores.urls')),
     path('revista/', include(('revista.urls', 'revista'), namespace='revista')),
-
+    path('cuentas/', include(('cuentas.urls', 'cuentas'), namespace='cuentas')),
 ]

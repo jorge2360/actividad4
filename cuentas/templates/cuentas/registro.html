@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+{% block logo %}Registro{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
+  <div class="container mt-5 bg-light p-4 rounded shadow text-dark" data-aos="fade-up" style="max-width: 600px;">
+    <h2 class="mb-4 text-center">Crear una cuenta</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{% url 'home:home' %}" class="btn btn-secondary">Volver al inicio</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
