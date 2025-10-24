@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Iniciar sesión{% endblock %}
+{% block logo %}Iniciar sesión{% endblock %}
+
+{% block content %}
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="Fondo de login" data-aos="fade-in">
+
+  <div class="container d-flex justify-content-center align-items-center py-5" data-aos="fade-up" style="min-height: 85vh;">
+    <div class="bg-light p-5 rounded-4 shadow-lg" style="max-width: 450px; width: 100%;">
+      <h2 class="text-center mb-4 fw-bold text-dark">Iniciar Sesión</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label fw-semibold text-dark">Usuario</label>
+          <input type="text" name="username" id="username" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label fw-semibold text-dark">Contraseña</label>
+          <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+
+        {% if messages %}
+          <div class="mb-3">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">Entrar</button>
+      </form>
+
+      <div class="text-center mt-3">
+        <p>¿No tienes cuenta? <a href="{% url 'cuentas:registro' %}">Regístrate aquí</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

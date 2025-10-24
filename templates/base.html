@@ -34,7 +34,12 @@
           <li><a href="{% url 'revista:estudiantes' %}">Estudiantes</a></li>
           <li><a href="{% url 'revista:administradores' %}">Administradores</a></li>
           <li><a href="{% url 'revista:publicaciones' %}">Publicaciones</a></li>
-          <li><a href="{% url 'cuentas:registro' %}" class="text-primary fw-bold">Registrarse</a></li> 
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'cuentas:logout' %}" class="text-danger fw-bold">Cerrar sesión</a></li>
+          {% else %}
+            <li><a href="{% url 'cuentas:login' %}" class="text-primary fw-bold">Iniciar sesión</a></li>
+            <li><a href="{% url 'cuentas:registro' %}" class="text-success fw-bold">Registrarse</a></li>
+          {% endif %}
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, UpdateView
 from django.urls import reverse_lazy
-
+from django.contrib.auth.decorators import login_required
 from .models import Publicacion, EstudiantePublicador, EstudianteAutorizador
 from .forms import ComentarioForm, EstudiantePublicadorForm, EstudianteAutorizadorForm, PublicacionForm
 
+@login_required
 def publicaciones(request):
     publicaciones = Publicacion.objects.all()
     publicadores = EstudiantePublicador.objects.all()
@@ -51,7 +52,7 @@ def agregar_publicacion(request):
         form = PublicacionForm()
     return render(request, 'revista/agregar_publicacion.html', {'form': form})
 
-
+@login_required
 def estudiantes(request):
     estudiantes = EstudiantePublicador.objects.all()
 
@@ -68,7 +69,7 @@ def estudiantes(request):
         "form_pub": form_pub
     })
 
-
+@login_required
 def administradores(request):
     administradores = EstudianteAutorizador.objects.all()
 
