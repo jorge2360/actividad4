@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from .models import Publicacion, EstudiantePublicador, EstudianteAutorizador
 from .forms import ComentarioForm, EstudiantePublicadorForm, EstudianteAutorizadorForm, PublicacionForm
+from django.db.models import Q 
 
 @login_required
 def publicaciones(request):
@@ -54,7 +55,14 @@ def agregar_publicacion(request):
 
 @login_required
 def estudiantes(request):
-    estudiantes = EstudiantePublicador.objects.all()
+    query = request.GET.get("q")  # entrada de búsqueda
+    if query:
+        # busca por coincidencia 
+        estudiantes = EstudiantePublicador.objects.filter(
+            Q(nombre__icontains=query)
+        )
+    else:
+        estudiantes = EstudiantePublicador.objects.all()
 
     if request.method == 'POST':
         form_pub = EstudiantePublicadorForm(request.POST)
@@ -66,12 +74,20 @@ def estudiantes(request):
 
     return render(request, "revista/estudiantes.html", {
         "estudiantes": estudiantes,
-        "form_pub": form_pub
+        "form_pub": form_pub,
+        "query": query or "",
     })
+
 
 @login_required
 def administradores(request):
-    administradores = EstudianteAutorizador.objects.all()
+    query = request.GET.get("q")
+    if query:
+        administradores = EstudianteAutorizador.objects.filter(
+            Q(nombre__icontains=query)
+        )
+    else:
+        administradores = EstudianteAutorizador.objects.all()
 
     if request.method == 'POST':
         form_aut = EstudianteAutorizadorForm(request.POST)
@@ -83,7 +99,8 @@ def administradores(request):
 
     return render(request, "revista/administradores.html", {
         "administradores": administradores,
-        "form_aut": form_aut
+        "form_aut": form_aut,
+        "query": query or "",
     })
 
 
